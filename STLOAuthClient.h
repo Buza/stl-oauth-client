@@ -36,6 +36,7 @@
 
 - (void) setAccessToken:(NSString *)accessToken secret:(NSString *)secret;
 - (void) setConsumerKey:(NSString *)consumerKey secret:(NSString *)secret;
+- (void) setVerifier:(NSString*)oauthVerifier;
 
 @property (nonatomic) BOOL signRequests;
 @property (nonatomic, copy) NSString *realm;
@@ -43,6 +44,7 @@
 @property (copy,readonly) NSString *consumerSecret;
 @property (copy,readonly) NSString *tokenIdentifier;
 @property (copy,readonly) NSString *tokenSecret;
+@property (copy,readonly) NSString *authVerifier;
 
 - (NSURLRequest *) unsignedRequestWithMethod:(NSString *)method 
                                         path:(NSString *)path 

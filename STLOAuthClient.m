@@ -40,6 +40,7 @@ static NSString* URLEncodeString(NSString *string);
 @property (copy) NSString *consumerSecret;
 @property (copy) NSString *tokenIdentifier;
 @property (copy) NSString *tokenSecret;
+@property (copy) NSString *authVerifier;
 
 - (id) initWithBaseURL:(NSURL *)url;
 - (void) addGeneratedTimestampAndNonceInto:(NSMutableDictionary *)dictionary;
@@ -48,12 +49,14 @@ static NSString* URLEncodeString(NSString *string);
 @end
 
 @implementation STLOAuthClient
+
 @synthesize consumerKey = _consumerKey, 
 consumerSecret = _consumerSecret, 
 tokenSecret = _tokenSecret, 
 tokenIdentifier = _tokenIdentifier, 
 signRequests = _signRequests, 
-realm = _realm;
+realm = _realm,
+authVerifier = _verifier;
 
 - (id) initWithBaseURL:(NSURL *)url consumerKey:(NSString *)consumerKey secret:(NSString *)consumerSecret {
     self = [super initWithBaseURL:url];
@@ -69,6 +72,10 @@ realm = _realm;
 
 - (id) initWithBaseURL:(NSURL *)url {
     return [self initWithBaseURL:url consumerKey:NULL secret:NULL];
+}
+
+- (void) setVerifier:(NSString*)oauthVerifier {
+    self.authVerifier = oauthVerifier;
 }
 
 - (void) setAccessToken:(NSString *)accessToken secret:(NSString *)secret {
@@ -132,6 +139,7 @@ static const NSString *kOAuthVersionKey = @"oauth_version";
 static const NSString *kOAuthConsumerKey = @"oauth_consumer_key";
 static const NSString *kOAuthTokenIdentifier = @"oauth_token";
 static const NSString *kOAuthSignatureKey = @"oauth_signature";
+static const NSString *kOAuthVerifierKey = @"oauth_verifier";
 
 static const NSString *kOAuthSignatureTypeHMAC_SHA1 = @"HMAC-SHA1";
 static const NSString *kOAuthVersion1_0 = @"1.0";
@@ -150,6 +158,7 @@ static const NSString *kXAuthModeClientAuth = @"client_auth";
     
     if (self.consumerKey) [result setObject:self.consumerKey forKey:kOAuthConsumerKey];
     if (self.tokenIdentifier) [result setObject:self.tokenIdentifier forKey:kOAuthTokenIdentifier];
+    if (self.authVerifier) [result setObject:self.authVerifier forKey:kOAuthVerifierKey];
     
     if (username != nil && password != nil) {
         [result setObject:username forKey:kXAuthUsernameKey];
